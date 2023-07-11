@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  web:
+    build:
+      context: ./front
+    command: npm run dev
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
+      JWT_SECRET: secret
+  backend:
+    build:
+      context: ./server
+    command: npm run dev
+    ports:
+      - "8000:8000"
+    environment:
+      JWT_SECRET: secret
+
