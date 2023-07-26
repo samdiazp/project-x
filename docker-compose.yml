@@ -1,23 +1,22 @@
 version: '3.8'
 services:
-  web:
+  front:
+    image: px/front:local
     build:
-      context: ./front
-    command: npm run dev
+      context: ./front/
     volumes:
       - ./front:/app
     ports:
       - "3000:3000"
     environment:
-      NODE_ENV: development
-      JWT_SECRET: secret
+      - JWT_SECRET=secret
   backend:
+    image: px/server:local
     build:
-      context: ./server
-    command: npm run dev
+      context: ./server/
     volumes:
       - ./server:/app
     ports:
       - "8000:8000"
     environment:
-      JWT_SECRET: secret
+      - JWT_SECRET=secret

@@ -4,14 +4,16 @@ RUN mkdir -p /app
 
 WORKDIR /app
 
-COPY package.json /app
+COPY package.json .
+COPY yarn.lock .
 
-RUN yarn install
+RUN yarn install --frozen-lockfile
 
-COPY . /app
+COPY . .
 
 RUN yarn build
 
-EXPOSE 3000
+EXPOSE 8000
+ENV PORT 8000
 
-CMD [ "yarn", "dev" ]
+CMD [ "node", "./dist/index.js" ]
