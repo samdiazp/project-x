@@ -4,8 +4,7 @@ services:
     image: px/front:local
     build:
       context: ./front/
-    volumes:
-      - ./front:/app
+      target: runner
     ports:
       - "3000:3000"
     environment:
@@ -14,8 +13,6 @@ services:
     image: px/server:local
     build:
       context: ./server/
-    volumes:
-      - ./server:/app
     ports:
       - "8000:8000"
     environment:
