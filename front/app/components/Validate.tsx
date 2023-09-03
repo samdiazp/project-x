@@ -1,36 +1,36 @@
-'use client'
-import React, {useState} from "react"
+"use client";
+
+import { useRouter } from "next/navigation";
 
 export default function Validate() {
-  const [jwt, setJwt] = useState('')
-  const [data, setData] = useState<Object | null>(null)
+  const router = useRouter();
   async function validate(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault()
-    const response = await fetch('http://localhost:8000/api/validate', {
-      method: 'POST',
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const jwt = formData.get("jwt");
+    if (!jwt) return;
+    const response = await fetch("/api/validate", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({jwt})
-    })
-    const json = await response.json()
-    setData(json)
-    setJwt('')
+      cache: "no-store",
+      next: {
+        revalidate: 1
+      },
+      body: JSON.stringify({ jwt }),
+    });
+    if (!response.ok) return;
+    (event.target as HTMLFormElement).reset();
+    router.refresh();
   }
   return (
-    <div className='flex flex-col'>
+    <div className="flex flex-col">
       <h2>Validate</h2>
       <form onSubmit={validate}>
-        <input
-          type="text"
-          placeholder='validate JWT'
-          value={jwt}
-          onChange={event => setJwt(event.target.value)}
-        />
+        <input type="text" placeholder="validate JWT" name="jwt" id="jwt" />
         <button type="submit">validate</button>
       </form>
-      {data && JSON.stringify(data, null, 2)}
     </div>
-  )
-
+  );
 }

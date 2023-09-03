@@ -1,7 +1,10 @@
-version: '3.8'
+version: "2.2"
 services:
   front:
     image: px/front:local
+    depends_on:
+      redis:
+        condition: service_healthy
     build:
       context: ./front/
       target: runner
@@ -9,6 +12,10 @@ services:
       - "3000:3000"
     environment:
       - JWT_SECRET=secret
+        REDIS_PORT=6379
+        REDIS_HOST=redis
+    networks:
+      - my-net
   backend:
     image: px/server:local
     build:
@@ -17,3 +24,17 @@ services:
       - "8000:8000"
     environment:
       - JWT_SECRET=secret
+    networks:
+      - my-net
+  redis:
+    image: redis:latest
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 1s
+      timeout: 3s
+      retries: 30
+    networks:
+      - my-net
+
+networks:
+  my-net:

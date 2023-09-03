@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 
 export default function Generate() {
   const [token, setToken] = useState("");
@@ -16,6 +16,9 @@ export default function Generate() {
     const body = await res.json();
     setJwt(body.token);
     setToken("");
+    setTimeout(() => {
+      setJwt("");
+    }, 5000);
   }
 
   return (
@@ -30,7 +33,7 @@ export default function Generate() {
           onChange={handleChangeToken}
           value={token}
         />
-        <button type="submit">generate</button>
+        <button type="submit" className="border-sky-600 border-1">generate</button>
       </form>
       {jwt.length > 0 && jwt}
     </div>

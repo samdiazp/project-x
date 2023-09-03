@@ -11,14 +11,14 @@ dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use(express_1.default.json());
-app.get('/', (_req, res) => {
-    res.send('Hello World!');
+app.get("/", (_req, res) => {
+    res.send("Hello World!");
 });
-app.post('/api/validate', (req, res) => {
+app.post("/api/validate", (req, res) => {
     const body = req.body;
     const secret = process.env.JWT_SECRET;
     if (!secret) {
-        throw new Error('Missing JWT_SECRET');
+        throw new Error("Missing JWT_SECRET");
     }
     try {
         const decoded = (0, jsonwebtoken_1.verify)(body.jwt, secret);
@@ -28,6 +28,6 @@ app.post('/api/validate', (req, res) => {
         res.status(400).json(err);
     }
 });
-app.listen('8000', () => {
-    console.log('Server is listening on port 8000');
+app.listen(process.env.PORT, () => {
+    console.log(`Server is listening on port ${process.env.PORT}!`);
 });
