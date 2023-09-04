@@ -13,12 +13,14 @@ export default async function handler(
     },
     body: JSON.stringify(req.body),
   });
-  if (!response.ok) return res.status(500).json({ error: "Validation failed" });
+  const json = await response.json();
+  if (!response.ok)
+    return res
+      .status(400)
+      .json({ error: "Validation failed", message: json });
   const client = RedisClient.getClient();
   if (!client)
-    return res.status(500).json({ error: "Redis connection failed" });
-  await client.connect();
-  const json = await response.json();
+    return res.status(503).json({ error: "Redis connection failed" });
   const key = `${req.body.jwt}:${JSON.stringify(json)}`;
   const exists = await client.lrange("jwt", 0, -1);
   if (exists.includes(key)) {

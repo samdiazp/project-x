@@ -8,6 +8,7 @@ COPY package.json .
 COPY yarn.lock .
 
 RUN yarn install --frozen-lockfile
+ENV JWT_SECRET=secret
 
 COPY . .
 

@@ -11,9 +11,6 @@ RUN yarn install --frozen-lockfile
 FROM base AS builder
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED 1
-ENV REDIS_HOST redis
-ENV REDIS_PORT 6379
-ENV JWT_SECRET secret
 ENV NODE_ENV production
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .

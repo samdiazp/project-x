@@ -11,6 +11,9 @@ export default function Generate() {
     event.preventDefault();
     const res = await fetch("/api/generate", {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({ jwt: token }),
     });
     const body = await res.json();
@@ -33,7 +36,9 @@ export default function Generate() {
           onChange={handleChangeToken}
           value={token}
         />
-        <button type="submit" className="border-sky-600 border-1">generate</button>
+        <button type="submit" className="border-sky-600 border-1">
+          generate
+        </button>
       </form>
       {jwt.length > 0 && jwt}
     </div>
